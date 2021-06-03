@@ -4,19 +4,18 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#131313">
+    android:background="@color/white">
 
-   <!-- <FrameLayout
-        android:id="@+id/news_frame"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
--->
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/new_text"
-        android:text="News"
+        android:id="@+id/stnew_text"
+        android:text="Stocks"
         android:textAlignment="center"
         android:textSize="24dp"
         android:textStyle="bold"
@@ -30,39 +29,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <ImageView
-        android:id="@+id/menu_imageview"
-        android:layout_width="64dp"
-        android:layout_height="40dp"
-        android:layout_margin="16dp"
-        android:padding="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/new_text"
-        app:layout_constraintBottom_toBottomOf="@id/new_text"
-        android:elevation="8dp"
-        app:srcCompat="@drawable/ic_menu" />
-
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/weather1_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        tools:listitem="@layout/weather1_item_layout"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/new_text"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/news_recyclerview"
+        android:id="@+id/stnews_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
-        tools:listitem="@layout/news_item_layout"
+        tools:listitem="@layout/stock_item_layout"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/weather1_recyclerview"
+        app:layout_constraintTop_toBottomOf="@id/stnew_text"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

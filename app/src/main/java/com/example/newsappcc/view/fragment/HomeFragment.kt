@@ -1,18 +1,21 @@
 package com.example.newsappcc.view.fragment
 
-import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import com.example.geoloacationfinder.viewmodel.NewsViewModel
 import com.example.newsappcc.R
+import com.example.newsappcc.SignInActivity
 import com.example.newsappcc.model.Articles
 import com.example.newsappcc.view.adapter.NewsAdapter
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.home_fragment_layout.*
 import java.util.*
 
@@ -21,7 +24,9 @@ class HomeFragment : Fragment(), NewsAdapter.NewsDelegate {
 
     //    private val newsAdapter = NewsAdapter(listOf())
     private val newsItemFragment: NewsItemFragment = NewsItemFragment()
-//    var activity: Activity? = getActivity()
+
+    //    var activity: Activity? = getActivity()
+
 
     private val viewModel: NewsViewModel by activityViewModels()
 
@@ -47,12 +52,58 @@ class HomeFragment : Fragment(), NewsAdapter.NewsDelegate {
             newsAdapter.updateNews(list)
         })
 
+        // Log.d("TAG_C", getCountry())
         viewModel.getNews(getCountry())
 
-//        Log.d("TAG_C", getCountry())
+
+
+        //Menu
+        menu_imageview.setOnClickListener {
+            val menu = PopupMenu(activity, it)
+            val popUpInflater = menu.menuInflater
+            popUpInflater.inflate(
+                R.menu.menu_window,
+                menu.menu
+            )
+            menu.setOnMenuItemClickListener { menuIt ->
+
+                when (menuIt.itemId) {
+                    R.id.sports -> {
+                        openFragment(SportsFragment())
+                    }
+                    R.id.politics -> {
+                        openFragment(PoliticsFragment())
+                    }
+                    R.id.weather -> {
+                        openFragment(WeatherFragment())
+                    }
+                    R.id.stocks -> {
+                        openFragment(StocksFragment())
+                    }
+                    R.id.logout -> {
+                        logout()
+                    }
+                }
+
+                true
+            }
+            menu.show()
+        }
 
     }
 
+    private fun logout() {
+        FirebaseAuth.getInstance().signOut()
+
+        activity?.let {
+            val intent = Intent(it, SignInActivity::class.java)
+            it.startActivity(intent)
+            it.finishAffinity()
+        }
+
+
+
+    }
     private fun getCountry(): String {
         val locale = Locale.getDefault()
         val country = locale.country
@@ -80,6 +131,14 @@ class HomeFragment : Fragment(), NewsAdapter.NewsDelegate {
                 .commit()
         }
 
+    }
+
+    private fun openFragment(frag: Fragment) {
+
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+            ?.addToBackStack(frag.tag)
+            ?.replace(R.id.main_frame, frag)
+            ?.commit()
     }
 
     fun example() {

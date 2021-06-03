@@ -29,6 +29,12 @@ class SignInActivity : AppCompatActivity() {
         //activity_main.xml is linked with this activity
         setContentView(R.layout.activity_main)
 
+        email_edittext.setOnClickListener{
+            it.showKeyboard()
+        }
+        password_edittext.setOnClickListener{
+            it.showKeyboard()
+        }
 
         signin_button.setOnClickListener {
             it.hideKeyboard()
@@ -99,6 +105,11 @@ class SignInActivity : AppCompatActivity() {
     fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    fun View.showKeyboard(){
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInputFromInputMethod(windowToken, 0)
     }
 
 
