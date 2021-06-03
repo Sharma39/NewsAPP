@@ -2,12 +2,10 @@ package com.example.geoloacationfinder.viewmodel
 
 
 
-import android.location.Location
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.geoloacationfinder.util.FunctionUtility.Companion.toFormattedString
 import com.example.geoloacationfinder.util.State
 import com.example.newsappcc.network.NewsRetrofit
 import com.example.newsappcc.model.Articles

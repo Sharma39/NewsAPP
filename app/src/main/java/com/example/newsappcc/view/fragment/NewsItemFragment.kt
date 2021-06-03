@@ -13,7 +13,6 @@ import com.example.newsappcc.R
 import com.example.newsappcc.model.Articles
 import kotlinx.android.synthetic.main.activity_home_page.*
 import kotlinx.android.synthetic.main.news_item_fragment_layout.*
-import kotlinx.android.synthetic.main.search_item_layout.*
 
 class NewsItemFragment: Fragment() {
 

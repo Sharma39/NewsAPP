@@ -2,18 +2,18 @@ package com.example.newsappcc.view.adapter
 
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
-import android.graphics.PorterDuff
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.newsappcc.R
 import com.example.newsappcc.model.Articles
-import com.example.newsappcc.view.fragment.NewsItemFragment
+import com.example.newsappcc.model.Favourite
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.news_item_layout.view.*
 
 
@@ -21,8 +21,9 @@ class NewsAdapter(private var newsList: List<Articles>, private val newsDelegate
     RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     private var click: Boolean = false
+    private lateinit var imgurl: String
 
-    inner class NewsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     interface NewsDelegate {
         fun selectNews(pokemon: Articles)
@@ -34,7 +35,7 @@ class NewsAdapter(private var newsList: List<Articles>, private val newsDelegate
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val itemView  = LayoutInflater.from(parent.context).inflate(
+        val itemView = LayoutInflater.from(parent.context).inflate(
             R.layout.news_item_layout, parent, false
         )
         return NewsViewHolder(itemView)
@@ -52,6 +53,9 @@ class NewsAdapter(private var newsList: List<Articles>, private val newsDelegate
                 .applyDefaultRequestOptions(RequestOptions.centerCropTransform())
                 .load(it.urlToImage)
                 .into(holder.itemView.image_view)
+            // adding the url to global variable to add to firebase, no need of this I have made
+            // the change below while uploading to firebase last line
+            // imgurl = it.urlToImage
             val colorMatrix = ColorMatrix()
             colorMatrix.setSaturation(3f)
             val filter = ColorMatrixColorFilter(colorMatrix)
@@ -63,25 +67,38 @@ class NewsAdapter(private var newsList: List<Articles>, private val newsDelegate
                 newsDelegate.selectNews(newsList[position])
             }
 
-            holder.itemView.star_view.setOnClickListener{
-                    if(!click) {
-                        holder.itemView.star_view.setImageResource(R.drawable.ic_star_golden)
-                        click = true
-                    }
-                else if(click){
-                        holder.itemView.star_view.setImageResource(R.drawable.ic_star_white)
-                        click = false
-                    }
+            //star click
+            holder.itemView.star_view.setOnClickListener { p->
+                if (!click) {
+                    holder.itemView.star_view.setImageResource(R.drawable.ic_star_golden)
+                    click = true
+
+                    //uploading to firebase
+                    val ref = FirebaseDatabase.getInstance().reference.child("NewsPosts")
+                    val key = ref.push().key ?: ""
+                    val post = Favourite(
+                        FirebaseAuth.getInstance().currentUser.toString(),
+                        key,
+                        holder.itemView.txt_textview.text.toString().trim(),
+                        holder.itemView.pub_textview.text.toString().trim(),
+                        it.urlToImage
+                    )
+                    ref.child(key).setValue(post)
                 }
+                else if (click) {
+                    holder.itemView.star_view.setImageResource(R.drawable.ic_star_white)
+                    click = false
 
-
+                    //Delete from firebase
+                }
+            }
         }
     }
 
 
     override fun getItemCount(): Int {
         Log.d("TAG_N", newsList.size.toString())
-      return newsList.size
+        return newsList.size
     }
 
 

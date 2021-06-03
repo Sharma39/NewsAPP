@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.newsappcc.R
 import com.example.newsappcc.model.Articles
-import kotlinx.android.synthetic.main.sports_item_layout.view.*
 import kotlinx.android.synthetic.main.stock_item_layout.view.*
 
 class StocksAdapter(private var stList: List<Articles>):

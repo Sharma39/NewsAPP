@@ -9,7 +9,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.newsappcc.R
 import com.example.newsappcc.model.Articles
 import kotlinx.android.synthetic.main.politics_item_layout.view.*
-import kotlinx.android.synthetic.main.sports_item_layout.view.*
 
 class PoliticsAdapter(private var pList: List<Articles>):
     RecyclerView.Adapter<PoliticsAdapter.PoliticsViewHolder>() {

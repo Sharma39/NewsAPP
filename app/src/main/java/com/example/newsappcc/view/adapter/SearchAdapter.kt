@@ -1,7 +1,5 @@
 package com.example.newsappcc.view.adapter
 
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.newsappcc.R
 import com.example.newsappcc.model.Articles
-import kotlinx.android.synthetic.main.news_item_layout.view.*
 import kotlinx.android.synthetic.main.search_item_layout.view.*
 
 class SearchAdapter(private var sList: List<Articles>):
