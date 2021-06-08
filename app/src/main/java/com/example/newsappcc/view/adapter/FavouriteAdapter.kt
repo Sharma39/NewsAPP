@@ -8,9 +8,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.newsappcc.R
 import com.example.newsappcc.model.Favourite
-import kotlinx.android.synthetic.main.favourite_fragment_layout.view.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.favourite_item_layout.view.*
-import kotlinx.android.synthetic.main.news_item_layout.view.*
 
 class FavouriteAdapter(): RecyclerView.Adapter<FavouriteAdapter.FavouriteViewHolder>() {
 
@@ -36,6 +36,22 @@ class FavouriteAdapter(): RecyclerView.Adapter<FavouriteAdapter.FavouriteViewHol
             .applyDefaultRequestOptions(RequestOptions.centerCropTransform())
             .load(post.url)
             .into(holder.itemView.f_img)
+
+        holder.itemView.f_remove.setOnClickListener{
+
+            // Deletes the eshole List/table from firebase real-time database
+//            val ref = FirebaseDatabase.getInstance().reference
+//                .child("NewsPosts").removeValue()
+
+            
+            val ref = FirebaseAuth.getInstance().currentUser?.uid?.let { it1 ->
+                FirebaseDatabase.getInstance().reference
+                    .child("User: $it1")
+                    .child("NewsPosts").child(post.postId).removeValue()
+            }
+
+            }
+
     }
 
     override fun getItemCount(): Int = nposts.size

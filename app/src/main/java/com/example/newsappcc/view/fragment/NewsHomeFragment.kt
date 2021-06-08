@@ -15,11 +15,11 @@ import com.example.newsappcc.SignInActivity
 import com.example.newsappcc.model.Articles
 import com.example.newsappcc.view.adapter.NewsAdapter
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.home_fragment_layout.*
+import kotlinx.android.synthetic.main.news_home_fragment_layout.*
 import java.util.*
 
 
-class HomeFragment : Fragment(), NewsAdapter.NewsDelegate {
+class NewsHomeFragment : Fragment(), NewsAdapter.NewsDelegate {
 
     //    private val newsAdapter = NewsAdapter(listOf())
     private val newsItemFragment: NewsItemFragment = NewsItemFragment()
@@ -34,7 +34,7 @@ class HomeFragment : Fragment(), NewsAdapter.NewsDelegate {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_fragment_layout, container, false)
+        return inflater.inflate(R.layout.news_home_fragment_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

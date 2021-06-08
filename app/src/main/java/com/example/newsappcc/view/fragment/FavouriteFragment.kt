@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.newsappcc.R
 import com.example.newsappcc.model.Favourite
 import com.example.newsappcc.view.adapter.FavouriteAdapter
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -18,7 +19,11 @@ import kotlinx.android.synthetic.main.favourite_fragment_layout.*
 class FavouriteFragment: Fragment() {
 
     private val favAdapter = FavouriteAdapter()
-    private val postReference = Firebase.database.reference.child("NewsPosts")
+    private val postReference = FirebaseAuth.getInstance().currentUser?.uid?.let {
+        Firebase.database.reference
+        .child("User: $it").child("NewsPosts")
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -32,7 +37,7 @@ class FavouriteFragment: Fragment() {
         fav_recyclerview.adapter = favAdapter
 
         //getting data from firebase
-        postReference.addValueEventListener(object: ValueEventListener {
+        postReference?.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val newsList = mutableListOf<Favourite>()
                 snapshot.children.forEach {

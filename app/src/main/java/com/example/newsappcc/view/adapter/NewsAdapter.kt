@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.newsappcc.R
+import com.example.newsappcc.SignupFragment
 import com.example.newsappcc.model.Articles
 import com.example.newsappcc.model.Favourite
 import com.google.firebase.auth.FirebaseAuth
@@ -23,10 +24,11 @@ class NewsAdapter(private var newsList: List<Articles>, private val newsDelegate
     private var click: Boolean = false
     private lateinit var imgurl: String
 
+
     inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     interface NewsDelegate {
-        fun selectNews(pokemon: Articles)
+        fun selectNews(nws: Articles)
     }
 
     fun updateNews(nList: List<Articles>) {
@@ -68,14 +70,19 @@ class NewsAdapter(private var newsList: List<Articles>, private val newsDelegate
             }
 
             //star click
-            holder.itemView.star_view.setOnClickListener { p->
+            holder.itemView.star_view.setOnClickListener { p ->
                 if (!click) {
                     holder.itemView.star_view.setImageResource(R.drawable.ic_star_golden)
                     click = true
 
                     //uploading to firebase
-                    val ref = FirebaseDatabase.getInstance().reference.child("NewsPosts")
-                    val key = ref.push().key ?: ""
+                    val ref = FirebaseAuth.getInstance()
+                        .currentUser?.let { it1 ->
+                            FirebaseDatabase.getInstance().reference.child(
+                                "User: ${it1.uid}"
+                            ).child("NewsPosts")
+                        }
+                    val key = ref?.push()?.key ?: ""
                     val post = Favourite(
                         FirebaseAuth.getInstance().currentUser.toString(),
                         key,
@@ -83,18 +90,16 @@ class NewsAdapter(private var newsList: List<Articles>, private val newsDelegate
                         holder.itemView.pub_textview.text.toString().trim(),
                         it.urlToImage
                     )
-                    ref.child(key).setValue(post)
+                    ref?.child(key)?.setValue(post)
                 }
                 else if (click) {
                     holder.itemView.star_view.setImageResource(R.drawable.ic_star_white)
                     click = false
-
-                    //Delete from firebase
                 }
             }
         }
-    }
 
+    }
 
     override fun getItemCount(): Int {
         Log.d("TAG_N", newsList.size.toString())
